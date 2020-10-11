@@ -1,0 +1,16 @@
+{
+    "language": "en",
+    "components": {
+        "loading": {
+            "title": "Loading..."
+        }
+    },
+    "pages": {
+        "home": {
+            "title": "Home"
+        },
+        "aboutUs": {
+            "title": "About us"
+        }
+    }
+}

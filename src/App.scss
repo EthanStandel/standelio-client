@@ -1,0 +1,11 @@
+body {
+    margin: 0;
+
+    &, * {
+        user-select: none;
+    }
+}
+
+button, button > *, .MuiButton-label {
+    text-transform: none;
+}
