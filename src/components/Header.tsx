@@ -86,7 +86,7 @@ export namespace Header {
     
         const drawerVariant = viewportState !== Viewport.State.Desktop ? "temporary" : "permanent";
     
-        const menu = <Menu.Component width={drawerWidth} />;
+        const menu = <Menu.Component onItemSelect={toggleDrawerState} width={drawerWidth} />;
         // TODO: Make sure this closes when a link is clicked
         const mobileMenu = (
             <Drawer className={classes.drawer}

@@ -1,3 +1,4 @@
+import * as _ from "lodash";
 import React from "react";
 import { ListItem, ListItemText } from "@material-ui/core";
 import List from '@material-ui/core/List';
@@ -8,7 +9,7 @@ import { Properties } from "../language/Properties";
 
 export namespace Menu {
 
-    export const Component: React.FC<{ width: string }> = ({ width }) => {
+    export const Component: React.FC<{ width: string, onItemSelect?: (route: string) => any }> = ({ width, onItemSelect = _.noop }) => {
         const useStyles = makeStyles(theme => ({
             link: {
                 textDecoration: "none",
@@ -31,7 +32,7 @@ export namespace Menu {
         return (
             <List>
             {routesAndLabels.map(({ route, label }) => (
-                <Link key={Math.random()} className={classes.link} to={route}>
+                <Link key={Math.random()} className={classes.link} onClick={() => onItemSelect(route)} to={route}>
                     <ListItem className={classes.menuWidth} button>
                         <ListItemText primary={label} />
                     </ListItem>
