@@ -1,7 +1,7 @@
 import React from "react";
 import { Route, Redirect, Switch } from "react-router-dom";
-import { Properties } from "../language/Properties";
-import { Random } from "../utils/Random";
+import { Properties } from "../../language/Properties";
+import { Random } from "../../utils/Random";
 import { Loading } from "./Loading";
 
 export namespace Routes {
@@ -14,8 +14,8 @@ export namespace Routes {
     };
 
     const LazyPage: PageMap<React.LazyExoticComponent<React.FC>> = {
-        home: React.lazy(() => import("../pages/Home")),
-        aboutUs: React.lazy(() => import("../pages/AboutUs"))
+        home: React.lazy(() => import("../../pages/Home")),
+        aboutUs: React.lazy(() => import("../../pages/AboutUs"))
     };
 
     export const Component = () => {

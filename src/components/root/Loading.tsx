@@ -1,6 +1,6 @@
 import React from "react";
-import { Properties } from "../language/Properties";
-import { useBasicPageStyles } from "../styles/BasicPage";
+import { Properties } from "../../language/Properties";
+import { useBasicPageStyles } from "../../styles/BasicPage";
 
 export namespace Loading {
     

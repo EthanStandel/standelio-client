@@ -1,5 +1,7 @@
+import * as _ from "lodash";
 import { PropertiesType } from "./PropertiesType";
 import React, { useState, useEffect, useContext } from "react";
+import { Helmet } from "react-helmet";
 
 /**
  * To add another supported language, update LanguageLoader.SupportedLanguages enum,
@@ -29,6 +31,17 @@ export namespace Properties {
 
     const Context = React.createContext<ContextType>([{}, () => undefined] as any as ContextType);
 
+    type DispatchPageTitle= React.Dispatch<React.SetStateAction<string>>;
+    type TitleContextType = [
+        string,
+        DispatchPageTitle
+    ];
+    const TitleContext = React.createContext<TitleContextType>([{}, () => undefined] as any as TitleContextType);
+
+    export const usePageTitle = (): TitleContextType => {
+        return useContext(TitleContext);
+    }
+
     export const useAppProperties = (): ContextType => {
         return useContext(Context);
     }
@@ -40,14 +53,21 @@ export namespace Properties {
 
     export const usePageProperties = <PageId extends PageIds>(pageId: PageId): PageProperties[PageId] => {
         const [ properties ] = useAppProperties();
+        const pageProperties = properties.pages[pageId];
+
+        const [ pageTitle, setPageTitle ] = usePageTitle();
+        if (pageTitle !== pageProperties.title) {
+            setPageTitle(pageProperties.title);
+        }
+
         return properties.pages[pageId];
     }
 
     export const Component: React.FC = ({ children }) => {
         const [ properties, setProperties ] = useState<PropertiesType>({} as PropertiesType);
         const [ language, setLanguage ] = useState<SupportedLanguage>(getDefaultLanguage());
+        const [ pageTitle, setPageTitle ] = useState("");
         const propertiesLoaded = !!properties.language;
-        const forwardProps = { children, value: [ properties, setLanguage ] as ContextType };
 
         useEffect(() => {
             const isSupported = Object.values(SupportedLanguage).some(supportedLanguage => supportedLanguage === language);
@@ -63,7 +83,14 @@ export namespace Properties {
             import(`./${languageToLoad}`).then(setProperties);
         }, [language]);
 
-        return propertiesLoaded ? <Context.Provider {...forwardProps} /> : null;
+        return propertiesLoaded ? (<>
+            <Helmet>
+                <title>{_.template(properties.global.$title)({ pageTitle })}</title>
+            </Helmet>
+            <Context.Provider value={[ properties, setLanguage ]}>
+                <TitleContext.Provider value={[ pageTitle, setPageTitle ]} children={children} />
+            </Context.Provider>
+        </>) : null;
     }
 
 }

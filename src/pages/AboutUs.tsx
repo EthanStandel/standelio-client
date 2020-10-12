@@ -4,9 +4,11 @@ import { useBasicPageStyles } from "../styles/BasicPage";
 
 export namespace AboutUs {
 
+    const pageId: Properties.PageIds = "aboutUs";
+
     export const Page: React.FC = () => {
         const classes = useBasicPageStyles();
-        const properties = Properties.usePageProperties("aboutUs");
+        const properties = Properties.usePageProperties(pageId);
     
         return (
             <div className={classes.root}>{properties.title}</div>

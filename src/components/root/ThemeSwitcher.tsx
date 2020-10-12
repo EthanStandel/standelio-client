@@ -2,7 +2,7 @@ import React from "react";
 import LightModeIcon from "@material-ui/icons/Brightness7";
 import DarkModeIcon from "@material-ui/icons/Brightness4";
 import { IconButton } from "@material-ui/core";
-import { Theme } from "../Theme";
+import { Theme } from "../../Theme";
 
 export namespace ThemeSwitcher {
 

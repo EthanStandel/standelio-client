@@ -5,7 +5,7 @@ import List from '@material-ui/core/List';
 import { Link } from "react-router-dom";
 import { Routes } from "./Routes";
 import { makeStyles } from "@material-ui/core";
-import { Properties } from "../language/Properties";
+import { Properties } from "../../language/Properties";
 
 export namespace Menu {
 

@@ -3,8 +3,8 @@ import { Theme } from "./Theme";
 import { Properties } from "./language/Properties";
 import { BrowserRouter } from "react-router-dom";
 import "./App.scss";
-import { Header } from "./components/Header";
-import { Routes } from "./components/Routes";
+import { Header } from "./components/root/Header";
+import { Routes } from "./components/root/Routes";
 
 export namespace App {
 

@@ -4,17 +4,12 @@ import Toolbar from '@material-ui/core/Toolbar'
 import Drawer from '@material-ui/core/Drawer';
 import MenuIcon from '@material-ui/icons/Menu';
 import IconButton from '@material-ui/core/IconButton';
-import { ThemeOptions } from '@material-ui/core/styles/createMuiTheme';
 import { makeStyles } from '@material-ui/core';
 import { Viewport } from './Viewport';
 import { Menu } from './Menu';
 import { ThemeSwitcher } from './ThemeSwitcher';
 
 export namespace Header {
-    export interface Props {
-        themeOptions?: ThemeOptions;
-        onThemeTypeInvert?: () => any;
-    }
     
     const small = "@media (min-width:0px) and (orientation: landscape)";
     const large = "@media (min-width:600px)";
@@ -71,7 +66,7 @@ export namespace Header {
         }
     });
     
-    export const Component: React.FC<Props> = ({ onThemeTypeInvert, themeOptions, children }) => {
+    export const Component: React.FC<{}> = ({ children }) => {
     
         const [ drawerState, setDrawerState ] = React.useState(false);
         const classes = useStyles();
