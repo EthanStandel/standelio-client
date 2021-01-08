@@ -56,9 +56,12 @@ export namespace Properties {
         const pageProperties = properties.pages[pageId];
 
         const [ pageTitle, setPageTitle ] = usePageTitle();
-        if (pageTitle !== pageProperties.title) {
-            setPageTitle(pageProperties.title);
-        }
+
+        useEffect(() => {
+            if (pageTitle !== pageProperties.title) {
+                setPageTitle(pageProperties.title);
+            }
+        }, [pageProperties.title, setPageTitle, pageTitle]);
 
         return properties.pages[pageId];
     }
