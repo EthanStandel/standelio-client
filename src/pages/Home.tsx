@@ -1,6 +1,5 @@
 import { makeStyles } from "@material-ui/core";
 import React from "react";
-import { Headshot } from "../components/home/Headshot";
 import { Card } from '@material-ui/core';
 import { Properties } from "../language/Properties";
 import { Viewport } from "../components/root/Viewport";
@@ -36,7 +35,6 @@ export namespace Home {
         
         return wrapper(<>
                 <h1>{properties.title}</h1>
-                <Headshot.Component uri="/headshot.jpg" />
         </>);
     }
 

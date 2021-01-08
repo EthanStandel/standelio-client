@@ -1,14 +1,11 @@
 {
     "language": "en",
     "global": {
-        "$title": "Standel.io<% !!pageTitle ? print(\" | \" + pageTitle) : print(\"\") %>"
+        "$title": "Smart-Garden.Standel.io<% !!pageTitle ? print(\" | \" + pageTitle) : print(\"\") %>"
     },
     "components": {
         "loading": {
             "title": "Loading..."
-        },
-        "headshot": {
-            "imgAlt": "Headshot"
         }
     },
     "pages": {

@@ -9,7 +9,7 @@ export namespace Theme {
     const THEME_KEY = "THEME";
 
     const primary = {
-        main: "#ff00dd"
+        main: "#00AF72"
     };
 
     const systemColorTheme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
