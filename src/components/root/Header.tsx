@@ -8,6 +8,9 @@ import { makeStyles } from '@material-ui/core';
 import { Viewport } from './Viewport';
 import { Menu } from './Menu';
 import { ThemeSwitcher } from './ThemeSwitcher';
+import GoogleLogin, { GoogleLoginProps, GoogleLoginResponse, GoogleLoginResponseOffline } from 'react-google-login';
+import { GardenService } from '../../providers/GardenService';
+import { Properties } from '../../language/Properties';
 
 export namespace Header {
     
@@ -68,6 +71,7 @@ export namespace Header {
     
     export const Component: React.FC<{}> = ({ children }) => {
     
+        const properties = Properties.useComponentProperties("header");
         const [ drawerState, setDrawerState ] = React.useState(false);
         const classes = useStyles();
         const [ viewportState ] = Viewport.useViewState();
@@ -96,6 +100,17 @@ export namespace Header {
                 {menu}
             </div>
         );
+
+        const googleAuthHandlers: GoogleLoginProps = {
+            clientId: process.env.REACT_APP_GOOGLE_OAUTH_CLIENT_ID as string,
+            buttonText: properties.googleOauth,
+            onSuccess: (response: GoogleLoginResponse | GoogleLoginResponseOffline) => {
+                const token: undefined | string = (response as GoogleLoginResponse).tokenId;
+                if (!!token) {
+                    new GardenService(token).validateAuth();
+                }
+            }
+        }
     
         return (
             <div className={classes.root}>
@@ -104,6 +119,7 @@ export namespace Header {
                     <Toolbar>
                         {menuTrigger}
                         <div className={classes.spacer} />
+                        <GoogleLogin {...googleAuthHandlers} />
                         <ThemeSwitcher.Component />
                     </Toolbar>
                 </AppBar>
