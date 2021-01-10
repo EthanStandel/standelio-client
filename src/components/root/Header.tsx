@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar'
 import Drawer from '@material-ui/core/Drawer';
@@ -8,8 +8,8 @@ import { makeStyles } from '@material-ui/core';
 import { Viewport } from './Viewport';
 import { Menu } from './Menu';
 import { ThemeSwitcher } from './ThemeSwitcher';
-import GoogleLogin, { GoogleLoginProps, GoogleLoginResponse, GoogleLoginResponseOffline } from 'react-google-login';
-import { GardenService } from '../../providers/GardenService';
+import GoogleLogin, { GoogleLoginProps, GoogleLoginResponse, GoogleLoginResponseOffline, GoogleLogout, GoogleLogoutProps } from 'react-google-login';
+import { GardenService, GardenServiceProvider } from '../../providers/GardenService';
 import { Properties } from '../../language/Properties';
 
 export namespace Header {
@@ -70,12 +70,13 @@ export namespace Header {
     });
     
     export const Component: React.FC<{}> = ({ children }) => {
-    
+        const [, setGardenService] = GardenServiceProvider.useGardenService();
         const properties = Properties.useComponentProperties("header");
         const [ drawerState, setDrawerState ] = React.useState(false);
         const classes = useStyles();
         const [ viewportState ] = Viewport.useViewState();
         const toggleDrawerState = () => setDrawerState(!drawerState);
+        const [ isAuthenticated, setIsAuthenticated ] = useState(false);
     
         const menuTrigger =
             viewportState === Viewport.State.Desktop ? null :
@@ -101,16 +102,31 @@ export namespace Header {
             </div>
         );
 
-        const googleAuthHandlers: GoogleLoginProps = {
-            clientId: process.env.REACT_APP_GOOGLE_OAUTH_CLIENT_ID as string,
+        const googleClientId = process.env.REACT_APP_GOOGLE_OAUTH_CLIENT_ID as string;
+
+        const googleLogin: GoogleLoginProps = {
+            clientId: googleClientId,
+            isSignedIn: true, // magic state management
             buttonText: properties.googleOauth,
             onSuccess: (response: GoogleLoginResponse | GoogleLoginResponseOffline) => {
                 const token: undefined | string = (response as GoogleLoginResponse).tokenId;
                 if (!!token) {
-                    new GardenService(token).validateAuth();
+                    setIsAuthenticated(true);
+                    setGardenService(
+                        new GardenService(token)
+                    );
                 }
             }
         }
+
+        const googleLogout: GoogleLogoutProps = {
+            clientId: googleClientId,
+            buttonText: properties.googleLogout,
+            onLogoutSuccess: () => {
+                setIsAuthenticated(false);
+                setGardenService(undefined);
+            }
+        };
     
         return (
             <div className={classes.root}>
@@ -119,7 +135,10 @@ export namespace Header {
                     <Toolbar>
                         {menuTrigger}
                         <div className={classes.spacer} />
-                        <GoogleLogin {...googleAuthHandlers} />
+                        { isAuthenticated ? 
+                            <GoogleLogout {...googleLogout} />
+                            : <GoogleLogin {...googleLogin} />
+                        }
                         <ThemeSwitcher.Component />
                     </Toolbar>
                 </AppBar>

@@ -1,4 +1,4 @@
-import React, { useState, Dispatch, SetStateAction } from "react";
+import React, { useState, Dispatch, SetStateAction, useEffect } from "react";
 
 /**
  * Viewport is a series of utility components for managing the 
@@ -49,13 +49,16 @@ export namespace Viewport {
     const useStateAfterResize: SelfUpdatingHook = getState => {
         const [ state, setState ] = useState(getState());
 
-        window.addEventListener("resize", function onResize() {
+        const onResize = () => {
             const newState = getState();
             if (newState !== state) {
-                setState(newState);
                 window.removeEventListener("resize", onResize);
+                setState(newState);
             }
-        });
+        }
+
+        window.addEventListener("resize", onResize);
+        useEffect(() => () => window.removeEventListener("resize", onResize));
 
         return [ state, setState ];
     }
@@ -82,10 +85,10 @@ export namespace Viewport {
     export const DesktopView: React.FC<ChildrenRequired> = windowResizeConditionalRender(isDesktop);
 
     /**
-     * When app is wrapped with RootViewport, there will always be
+     * When app is wrapped with Viewport.Root, there will always be
      * a class at the root identifying the viewport state for styles.
      * 
-     * A style root-targetted with .RootViewport and then .mobile,
+     * A style root-targetted with .Root and then .mobile,
      * .tablet or .desktop will create styles targetted at only 
      * viewports assumed to be those platforms.
      */ 
