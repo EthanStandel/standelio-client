@@ -1,0 +1,6 @@
+{
+    "environment": {
+        "googleClientId": "671963729355-a8v6e4u2dmq6obhrp96j00pgct03o3od.apps.googleusercontent.com",
+        "gardenServiceUrl": "http://localhost:4000"
+    }
+}

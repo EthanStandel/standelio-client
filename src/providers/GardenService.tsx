@@ -1,6 +1,7 @@
 import * as _ from "lodash";
 import axios from "axios";
 import React, { Dispatch, useState } from "react";
+import { environment } from "../config.json";
 
 export enum Authenticator {
     Google = "Google"
@@ -8,7 +9,7 @@ export enum Authenticator {
 
 export class GardenService {
 
-    private readonly url = process.env.REACT_APP_GARDEN_SERVICE_URL;
+    private readonly url = environment.gardenServiceUrl;
 
     private authenticationHeaders = {
         Authorization: `Bearer ${this.accessToken}`,
@@ -22,7 +23,7 @@ export class GardenService {
 
     public validateAuth(): Promise<void> {
         return axios.get(
-            `${this.url}/validate-token`,
+            `${this.url}/authentication/validate-token`,
             { headers: this.authenticationHeaders } 
         )
     }

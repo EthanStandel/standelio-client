@@ -11,6 +11,7 @@ import { ThemeSwitcher } from './ThemeSwitcher';
 import GoogleLogin, { GoogleLoginProps, GoogleLoginResponse, GoogleLoginResponseOffline, GoogleLogout, GoogleLogoutProps } from 'react-google-login';
 import { GardenService, GardenServiceProvider } from '../../providers/GardenService';
 import { Properties } from '../../language/Properties';
+import { environment } from "../../config.json";
 
 export namespace Header {
     
@@ -102,25 +103,23 @@ export namespace Header {
             </div>
         );
 
-        const googleClientId = process.env.REACT_APP_GOOGLE_OAUTH_CLIENT_ID as string;
-
         const googleLogin: GoogleLoginProps = {
-            clientId: googleClientId,
+            clientId: environment.googleClientId,
             isSignedIn: true, // magic state management
             buttonText: properties.googleOauth,
             onSuccess: (response: GoogleLoginResponse | GoogleLoginResponseOffline) => {
                 const token: undefined | string = (response as GoogleLoginResponse).tokenId;
                 if (!!token) {
                     setIsAuthenticated(true);
-                    setGardenService(
-                        new GardenService(token)
-                    );
+                    const gardenService = new GardenService(token);
+                    setGardenService(gardenService);
+                    gardenService.validateAuth();
                 }
             }
         }
 
         const googleLogout: GoogleLogoutProps = {
-            clientId: googleClientId,
+            clientId: environment.googleClientId,
             buttonText: properties.googleLogout,
             onLogoutSuccess: () => {
                 setIsAuthenticated(false);
